@@ -93,13 +93,15 @@ jobs:
         result <- devtools::test()
         
         # Check if any tests failed
-        if (any(result$failed > 0)) {
-          cat("** TESTS FAILED **\n")
-          print(result)
+        cat("=== TEST RESULTS ===\n")
+        print(result)
+        
+        total_failed <- sum(result$failed)
+        if (total_failed > 0) {
+          cat("** TESTS FAILED: ", total_failed, " failures **\n")
           quit(status = 1)
         } else {
           cat("** ALL TESTS PASSED **\n")
-          print(result)
         }
       shell: Rscript {0}
     
