@@ -98,18 +98,26 @@ jobs:
         cat("=== TEST RESULTS ===\n")
         print(result)
         
-        # Check for test failures more reliably
-        has_failures <- FALSE
+        # Debug and check for test failures
+        cat("=== DEBUGGING TEST FAILURE DETECTION ===\n")
+        cat("result class:", class(result), "\n")
+        cat("result names:", names(result), "\n")
         if (is.data.frame(result) && "failed" %in% names(result)) {
+          cat("failed column:", result$failed, "\n")
           total_failed <- sum(result$failed, na.rm = TRUE)
-          has_failures <- total_failed > 0
-        } else {
-          # Fallback: check the printed output for FAIL
-          output_text <- capture.output(print(result))
-          has_failures <- any(grepl("FAIL", output_text))
+          cat("total_failed:", total_failed, "\n")
         }
         
-        if (has_failures) {
+        # Use the summary output approach since the data frame approach isn't working
+        output_text <- capture.output(print(result))
+        fail_lines <- grep("FAIL", output_text, value = TRUE)
+        cat("FAIL lines found:", length(fail_lines), "\n")
+        if (length(fail_lines) > 0) {
+          cat("FAIL lines:", fail_lines, "\n")
+        }
+        
+        # Exit with failure if any FAIL detected
+        if (length(fail_lines) > 0) {
           cat("** TESTS FAILED **\n")
           quit(status = 1)
         } else {
