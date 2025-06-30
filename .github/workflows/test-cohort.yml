@@ -57,7 +57,18 @@ jobs:
     
     - name: Run HCT cohort validation tests
       run: |
-        devtools::test()
+        # Run tests and capture results
+        result <- devtools::test()
+        
+        # Check if any tests failed
+        if (any(result$failed > 0)) {
+          cat("** TESTS FAILED **\n")
+          print(result)
+          quit(status = 1)
+        } else {
+          cat("** ALL TESTS PASSED **\n")
+          print(result)
+        }
       shell: Rscript {0}
     
     
