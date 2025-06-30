@@ -1,68 +1,3 @@
-Run # Debug package loading
-  # Debug package loading
-  cat("=== DEBUGGING PACKAGE LOADING ===\n")
-  cat("R version:", R.version.string, "\n")
-  cat("Installed packages:\n")
-  print(installed.packages()[c("cohortTdd", "testthat", "devtools"), "Version"])
-  
-  # Check if cohortTdd.demo files exist
-  cat("=== CHECKING DEMO PACKAGE FILES ===\n")
-  if (file.exists("DESCRIPTION")) {
-    cat("DESCRIPTION file exists\n")
-    cat("Package name:", read.dcf("DESCRIPTION")[,"Package"], "\n")
-  }
-  if (dir.exists("tests")) {
-    cat("tests directory exists\n")
-    cat("Test files:", list.files("tests", recursive = TRUE), "\n")
-  }
-  if (dir.exists("inst")) {
-    cat("inst directory exists\n")
-    cat("Inst files:", list.files("inst", recursive = TRUE), "\n")
-  }
-  
-  # Try to load cohortTdd explicitly
-  cat("=== LOADING COHORTTDD PACKAGE ===\n")
-  tryCatch({
-    library(cohortTdd)
-    cat("Successfully loaded cohortTdd\n")
-  }, error = function(e) {
-    cat("ERROR loading cohortTdd:", conditionMessage(e), "\n")
-    quit(status = 1)
-  })
-  
-  # Run tests and capture results
-  cat("=== RUNNING TESTS ===\n")
-  result <- devtools::test()
-  
-  # Check if any tests failed
-  cat("=== TEST RESULTS ===\n")
-  print(result)
-  
-  # Check for test failures more reliably
-  has_failures <- FALSE
-  if (is.data.frame(result) && "failed" %in% names(result)) {
-    total_failed <- sum(result$failed, na.rm = TRUE)
-    has_failures <- total_failed > 0
-  } else {
-    # Fallback: check the printed output for FAIL
-    output_text <- capture.output(print(result))
-    has_failures <- any(grepl("FAIL", output_text))
-  }
-  
-  if (has_failures) {
-    cat("** TESTS FAILED **\n")
-    quit(status = 1)
-  } else {
-    cat("** ALL TESTS PASSED **\n")
-  }
-  shell: /usr/local/bin/Rscript {0}
-  env:
-    R_LIBS_USER: /home/runner/work/_temp/Library
-    TZ: UTC
-    _R_CHECK_SYSTEM_CLOCK_: FALSE
-    NOT_CRAN: true
-    RSPM: https://packagemanager.posit.co/cran/__linux__/noble/latest
-    RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/noble/latest
 === DEBUGGING PACKAGE LOADING ===
 R version: R version 4.4.1 (2024-06-14) 
 Installed packages:
@@ -85,7 +20,7 @@ Successfully loaded cohortTdd
 Patient file: /home/runner/work/cohortTdd.demo/cohortTdd.demo/inst/testdata/hct_patients.xlsx 
 Cohort file: /home/runner/work/cohortTdd.demo/cohortTdd.demo/inst/testdata/hct_cohort.json 
 Working directory: /home/runner/work/cohortTdd.demo/cohortTdd.demo/tests/testthat 
-Temp directory: /tmp/RtmpqR4HmT 
+Temp directory: /tmp/RtmpKkQDhX 
 Successfully read explanation sheet with 7 rows
 Successfully parsed cohort JSON
 
@@ -137,7 +72,7 @@ Patient 5: EXCLUDE - has <4 HCT after index date
 
 
 ⠹ | 1        2 | hct_cohort                                                     
-✖ | 2        3 | hct_cohort [63.7s]
+✖ | 2        3 | hct_cohort [63.4s]
 ────────────────────────────────────────────────────────────────────────────────
 Failure ('test_hct_cohort.R:54:3'): Cohort validates correctly against all test patients
 results$failed_tests not equal to 0.
@@ -151,7 +86,7 @@ results$passed_tests not equal to 7.
 ────────────────────────────────────────────────────────────────────────────────
 
 ══ Results ═════════════════════════════════════════════════════════════════════
-Duration: 63.8 s
+Duration: 63.4 s
 
 ── Failed tests ────────────────────────────────────────────────────────────────
 Failure ('test_hct_cohort.R:54:3'): Cohort validates correctly against all test patients
@@ -171,7 +106,11 @@ results$passed_tests not equal to 7.
                                                   test nb failed skipped error
 1 Cohort validates correctly against all test patients  5      2   FALSE FALSE
   warning    user system   real passed
-1       0 103.682  6.999 63.743      3
+1       0 102.896  7.045 63.364      3
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      result
 1 file.exists(patients_file) is not TRUE\n\n, 10, 3, 10, 75, 3, 75, 10, 10, 37, 39, Cohort validates correctly against all test patients, file.exists(cohort_file) is not TRUE\n\n, 11, 3, 11, 78, 3, 78, 11, 11, 37, 39, Cohort validates correctly against all test patients, results$failed_tests not equal to 0.\n1/1 mismatches\n[1] 1 - 0 == 1, 54, 3, 54, 39, 3, 39, 54, 54, 37, 38, Cohort validates correctly against all test patients, results$total_tests not equal to 7.\nEqual, 55, 3, 55, 38, 3, 38, 55, 55, 37, 38, Cohort validates correctly against all test patients, results$passed_tests not equal to 7.\n1/1 mismatches\n[1] 6 - 7 == -1, 56, 3, 56, 39, 3, 39, 56, 56, 37, 38, Cohort validates correctly against all test patients
+=== DEBUGGING TEST FAILURE DETECTION ===
+result class: testthat_results 
+result names: 
+FAIL lines found: 0 
 ** ALL TESTS PASSED **

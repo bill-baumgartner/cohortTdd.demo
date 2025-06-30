@@ -92,33 +92,29 @@ jobs:
         
         # Run tests and capture results
         cat("=== RUNNING TESTS ===\n")
-        result <- devtools::test()
         
-        # Check if any tests failed
-        cat("=== TEST RESULTS ===\n")
-        print(result)
+        # Capture all output including the summary line
+        all_output <- capture.output({
+          result <- devtools::test()
+          print(result)
+        })
         
-        # Debug and check for test failures
-        cat("=== DEBUGGING TEST FAILURE DETECTION ===\n")
-        cat("result class:", class(result), "\n")
-        cat("result names:", names(result), "\n")
-        if (is.data.frame(result) && "failed" %in% names(result)) {
-          cat("failed column:", result$failed, "\n")
-          total_failed <- sum(result$failed, na.rm = TRUE)
-          cat("total_failed:", total_failed, "\n")
+        # Print the output so we can see it
+        cat(paste(all_output, collapse = "\n"), "\n")
+        
+        # Look for the summary line with FAIL count
+        summary_lines <- grep("\\[ FAIL", all_output, value = TRUE)
+        cat("=== SUMMARY LINES FOUND ===\n")
+        cat("Summary lines:", length(summary_lines), "\n")
+        if (length(summary_lines) > 0) {
+          cat("Summary content:", summary_lines, "\n")
         }
         
-        # Use the summary output approach since the data frame approach isn't working
-        output_text <- capture.output(print(result))
-        fail_lines <- grep("FAIL", output_text, value = TRUE)
-        cat("FAIL lines found:", length(fail_lines), "\n")
-        if (length(fail_lines) > 0) {
-          cat("FAIL lines:", fail_lines, "\n")
-        }
+        # Check if any failures are reported in summary
+        has_failures <- any(grepl("\\[ FAIL [1-9]", all_output))
         
-        # Exit with failure if any FAIL detected
-        if (length(fail_lines) > 0) {
-          cat("** TESTS FAILED **\n")
+        if (has_failures) {
+          cat("** TESTS FAILED - FAILING WORKFLOW **\n")
           quit(status = 1)
         } else {
           cat("** ALL TESTS PASSED **\n")
