@@ -1,5 +1,9 @@
 # cohortTdd Demo
 
+[![Test HCT Cohort](https://github.com/bill-baumgartner/cohortTdd.demo/actions/workflows/test-cohort.yml/badge.svg)](https://github.com/bill-baumgartner/cohortTdd.demo/actions/workflows/test-cohort.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R](https://img.shields.io/badge/R-%3E%3D4.1.0-blue.svg)](https://www.r-project.org/)
+
 This is a **demo project** showing cohort definition validation using the `cohortTdd` package. 
 
 > **💡 Auto-Generate This Structure**: Instead of manually copying this template, you can automatically generate a new validation project using the `cohortTdd` package:
