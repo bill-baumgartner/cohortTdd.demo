@@ -22,18 +22,30 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev
+        sudo apt-get install -y \
+          libcurl4-openssl-dev \
+          libssl-dev \
+          libxml2-dev \
+          libfontconfig1-dev \
+          libfreetype6-dev \
+          libpng-dev \
+          libtiff5-dev \
+          libjpeg-dev \
+          libharfbuzz-dev \
+          libfribidi-dev
     
     - name: Install R dependencies
       run: |
-        install.packages(c("remotes", "devtools", "testthat"))
+        install.packages(c("remotes", "testthat"))
         # Install cohortTdd package
-        remotes::install_github("your-org/cohortTdd")
+        remotes::install_github("bill-baumgartner/cohortTdd")
         # Install any additional dependencies
         if (file.exists("DESCRIPTION")) {
           remotes::install_deps(dependencies = TRUE)
         }
       shell: Rscript {0}
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Run HCT cohort validation tests
       run: |
