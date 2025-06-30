@@ -24,8 +24,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ${{ env.R_LIBS_USER }}
-        key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('DESCRIPTION') }}
-        restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
+        key: ${{ runner.os }}-r-4.4.1-${{ hashFiles('DESCRIPTION') }}
+        restore-keys: ${{ runner.os }}-r-4.4.1-
         
     - name: Install system dependencies
       run: |
@@ -44,7 +44,7 @@ jobs:
     
     - name: Install R dependencies
       run: |
-        install.packages(c("remotes", "testthat"))
+        install.packages(c("remotes", "testthat", "devtools"))
         # Install cohortTdd package
         remotes::install_github("bill-baumgartner/cohortTdd")
         # Install any additional dependencies
