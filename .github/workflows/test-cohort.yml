@@ -96,9 +96,19 @@ jobs:
         cat("=== TEST RESULTS ===\n")
         print(result)
         
-        total_failed <- sum(result$failed)
-        if (total_failed > 0) {
-          cat("** TESTS FAILED: ", total_failed, " failures **\n")
+        # Check for test failures more reliably
+        has_failures <- FALSE
+        if (is.data.frame(result) && "failed" %in% names(result)) {
+          total_failed <- sum(result$failed, na.rm = TRUE)
+          has_failures <- total_failed > 0
+        } else {
+          # Fallback: check the printed output for FAIL
+          output_text <- capture.output(print(result))
+          has_failures <- any(grepl("FAIL", output_text))
+        }
+        
+        if (has_failures) {
+          cat("** TESTS FAILED **\n")
           quit(status = 1)
         } else {
           cat("** ALL TESTS PASSED **\n")
