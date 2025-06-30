@@ -1,0 +1,17 @@
+Package: cohortTdd.demo
+Type: Package
+Title: cohortTdd Demo - Cohort Definition Validation Example
+Version: 0.1.0
+Authors@R: person("Bill", "Baumgartner", email = "william.baumgartner@cuanschutz.edu", role = c("aut", "cre"))
+Description: Template project demonstrating cohort definition testing using cohortTdd package.
+    Users can replace the sample data files and update test file names to validate their own cohorts.
+    Tests cohort logic against synthetic patient data with known inclusion/exclusion patterns.
+License: MIT
+URL: https://github.com/bill-baumgartner/cohortTdd.demo
+BugReports: https://github.com/bill-baumgartner/cohortTdd.demo/issues
+Encoding: UTF-8
+Depends: R (>= 4.1.0)
+Suggests:
+    cohortTdd,
+    testthat (>= 3.0.0),
+    devtools
