@@ -35,13 +35,15 @@ Run # Debug package loading
   result <- devtools::test()
   
   # Check if any tests failed
-  if (any(result$failed > 0)) {
-    cat("** TESTS FAILED **\n")
-    print(result)
+  cat("=== TEST RESULTS ===\n")
+  print(result)
+  
+  total_failed <- sum(result$failed)
+  if (total_failed > 0) {
+    cat("** TESTS FAILED: ", total_failed, " failures **\n")
     quit(status = 1)
   } else {
     cat("** ALL TESTS PASSED **\n")
-    print(result)
   }
   shell: /usr/local/bin/Rscript {0}
   env:
@@ -73,7 +75,7 @@ Successfully loaded cohortTdd
 Patient file: /home/runner/work/cohortTdd.demo/cohortTdd.demo/inst/testdata/hct_patients.xlsx 
 Cohort file: /home/runner/work/cohortTdd.demo/cohortTdd.demo/inst/testdata/hct_cohort.json 
 Working directory: /home/runner/work/cohortTdd.demo/cohortTdd.demo/tests/testthat 
-Temp directory: /tmp/Rtmp9CSMPt 
+Temp directory: /tmp/Rtmp6Gl9Dh 
 Successfully read explanation sheet with 7 rows
 Successfully parsed cohort JSON
 
@@ -91,6 +93,41 @@ downloaded 783.2 MB
 
 
 Download completed!
+ERROR DETAILS:
+ Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name,  
+ERROR DETAILS:
+ Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name,  
+ERROR DETAILS:
+ Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name,  
+ERROR DETAILS:
+ Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name,  
+ERROR DETAILS:
+ Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name,  
+ERROR DETAILS:
+ Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name,  
+ERROR DETAILS:
+ Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name,  
 
 ====================================================================== 
                        COHORT VALIDATION SUMMARY
@@ -104,24 +141,45 @@ Success rate: 0.0%
 -------------------------------------------------- 
 Patient 1: INCLUDE - Exact match
   Error: Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name, 
 
 Patient 2: EXCLUDE - on testosterone, but the 2 testosterone exposures are <7 days apart
   Error: Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name, 
 
 Patient 3: EXCLUDE - due to estradiol exposure
   Error: Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name, 
 
 Patient 4: EXCLUDE - no HCT before index date
   Error: Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name, 
 
 Patient 5: EXCLUDE - has <4 HCT after index date
   Error: Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name, 
 
 Patient 6: INCLUDE - Exact match
   Error: Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name, 
 
 Patient 7: INCLUDE - Exact match
   Error: Cohort generation failed: 
+  Message:  
+  Class: rlib_error_package_not_found 
+  Call: CDMConnector::generateCohortSet(cdm, cohort_set, name = name, 
 
 
 ** DETAILED RESULTS:
@@ -136,7 +194,7 @@ Error:  Patient 7: INCLUDE - Exact match
 
 
 ⠹ | 1        2 | hct_cohort                                                     
-✖ | 2        3 | hct_cohort [64.5s]
+✖ | 2        3 | hct_cohort [45.0s]
 ────────────────────────────────────────────────────────────────────────────────
 Failure ('test_hct_cohort.R:54:3'): Cohort validates correctly against all test patients
 results$failed_tests not equal to 0.
@@ -150,7 +208,7 @@ results$passed_tests not equal to 7.
 ────────────────────────────────────────────────────────────────────────────────
 
 ══ Results ═════════════════════════════════════════════════════════════════════
-Duration: 64.6 s
+Duration: 45.0 s
 
 ── Failed tests ────────────────────────────────────────────────────────────────
 Failure ('test_hct_cohort.R:54:3'): Cohort validates correctly against all test patients
@@ -164,12 +222,13 @@ results$passed_tests not equal to 7.
 [1] 0 - 7 == -7
 
 [ FAIL 2 | WARN 0 | SKIP 0 | PASS 3 ]
-** ALL TESTS PASSED **
+=== TEST RESULTS ===
                file    context
 1 test_hct_cohort.R hct_cohort
                                                   test nb failed skipped error
 1 Cohort validates correctly against all test patients  5      2   FALSE FALSE
   warning   user system   real passed
-1       0 69.939  5.954 64.519      3
+1       0 69.101  5.864 44.994      3
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      result
 1 file.exists(patients_file) is not TRUE\n\n, 10, 3, 10, 75, 3, 75, 10, 10, 37, 39, Cohort validates correctly against all test patients, file.exists(cohort_file) is not TRUE\n\n, 11, 3, 11, 78, 3, 78, 11, 11, 37, 39, Cohort validates correctly against all test patients, results$failed_tests not equal to 0.\n1/1 mismatches\n[1] 7 - 0 == 7, 54, 3, 54, 39, 3, 39, 54, 54, 37, 38, Cohort validates correctly against all test patients, results$total_tests not equal to 7.\nEqual, 55, 3, 55, 38, 3, 38, 55, 55, 37, 38, Cohort validates correctly against all test patients, results$passed_tests not equal to 7.\n1/1 mismatches\n[1] 0 - 7 == -7, 56, 3, 56, 39, 3, 39, 56, 56, 37, 38, Cohort validates correctly against all test patients
+** ALL TESTS PASSED **

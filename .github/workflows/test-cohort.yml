@@ -45,6 +45,8 @@ jobs:
     - name: Install R dependencies
       run: |
         install.packages(c("remotes", "testthat", "devtools"))
+        # Install CDMConnector dependencies that might be missing
+        install.packages(c("DBI", "RSQLite", "duckdb", "CirceR", "SqlRender"))
         # Install cohortTdd package
         remotes::install_github("bill-baumgartner/cohortTdd")
         # Install any additional dependencies
