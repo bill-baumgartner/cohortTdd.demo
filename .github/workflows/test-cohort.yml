@@ -57,7 +57,39 @@ jobs:
     
     - name: Run HCT cohort validation tests
       run: |
+        # Debug package loading
+        cat("=== DEBUGGING PACKAGE LOADING ===\n")
+        cat("R version:", R.version.string, "\n")
+        cat("Installed packages:\n")
+        print(installed.packages()[c("cohortTdd", "testthat", "devtools"), "Version"])
+        
+        # Check if cohortTdd.demo files exist
+        cat("=== CHECKING DEMO PACKAGE FILES ===\n")
+        if (file.exists("DESCRIPTION")) {
+          cat("DESCRIPTION file exists\n")
+          cat("Package name:", read.dcf("DESCRIPTION")[,"Package"], "\n")
+        }
+        if (dir.exists("tests")) {
+          cat("tests directory exists\n")
+          cat("Test files:", list.files("tests", recursive = TRUE), "\n")
+        }
+        if (dir.exists("inst")) {
+          cat("inst directory exists\n")
+          cat("Inst files:", list.files("inst", recursive = TRUE), "\n")
+        }
+        
+        # Try to load cohortTdd explicitly
+        cat("=== LOADING COHORTTDD PACKAGE ===\n")
+        tryCatch({
+          library(cohortTdd)
+          cat("Successfully loaded cohortTdd\n")
+        }, error = function(e) {
+          cat("ERROR loading cohortTdd:", conditionMessage(e), "\n")
+          quit(status = 1)
+        })
+        
         # Run tests and capture results
+        cat("=== RUNNING TESTS ===\n")
         result <- devtools::test()
         
         # Check if any tests failed
